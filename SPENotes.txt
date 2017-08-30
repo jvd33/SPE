@@ -1,0 +1,126 @@
+Performance Metrics-
+	Standard of measurements, method/technique of collecting data
+	Measurement - number or label, actual result
+
+Clear reqs -> good tests
+Clear reqs -> efficient development
+
+Earlier you measure, earlier you can inform decisions
+
+Two main types: 
+	-Resource Metrics
+
+		Processor utilization
+			-Percentage of processor time being used 
+			-Can be measured by app time, system time, user mode,
+			 kernel mode...etc
+			-Typically measured by subtracting cycles from the idle
+			 process
+			-Always defined over a period of time!
+
+		Bandwidth utilization
+			-Number of bits/sec divided by maximum bandwidth
+			-Always defined over a period of time (bits/SECOND)
+
+		Device utilization
+
+			-Percentage of time that any devices are being used
+				-Typically directly related to power usage
+				-e.g. Disk utilization, sensor devices
+			-Typically measured by sampling	
+
+		Memory occupancy
+			-The percentage of memory being used over time
+			-Memory footprint is the maximum memory used
+			-In bytes, obvi
+			-Can be measured in malloc() calls and object instantiation
+	-UX Metrics
+
+		Response Time
+			-The total period of time between a job starting
+			and a job ending
+			-Can be defined at any level (eg system vs sub)
+			-Tends to be all-inclusive
+			-Includes service time 
+
+		Service Time
+			-The time for a (sub)system to complete its task
+			-Only a 'piece' of entire system
+ 
+		Throughput
+			-The rate at which the systems COMPLETES a job	
+
+Working with "Average"
+
+	For metrics based on transactions (counting), compute arithmetic mean:
+		-Simple statistic
+		-eg "average response time over [O, T] where N(T) is the number of individual ops
+			Avg = 1/N(T) * the sum of all response times from [0, T]
+
+	For metrics based on time averaging, use integral:
+		-1/T * int 0->T U(t)dt where U(t) = {1 if resource is busy at t, else 0 
+
+	Multiprocessors (p processors):
+		See slide
+
+What makes a good metric?
+
+	Here are some properties of a good metric:
+		-Linearity
+		-Reliability
+		-Repeatability
+		-Ease of measurement
+		-Consistency
+		-Representation condition
+
+	Running example metrics:
+		-MIPS: millions of instructions per second for processor speed
+		-SLOC: lines of code obvi
+
+Linearity & Reliability:
+
+	Linearity:
+		-Our notion of performance is linear, and so are (well, should)  our metrics
+		-Many of our future analyses of queueing theory assume linearity
+			*50% slower should ACTUALLY be half
+		-Metrics that are NOT linear
+			*Decibels: Log 
+			*Richter scale: Log
+
+	Reliability:
+		-System A can outperform System B whenever the metric indicates that it does
+			*basically tracks everything
+		-Execution time is fairly reliable, but MIPS is not
+
+	Repeatability:
+		-If we run the experiment multiple times with the same conditions, are the results the same?
+		-SLOC is repeatable
+		-Execution time is repeatable, but the conditions can be tough to replicate
+
+	Ease of Measurement:
+		-Is the procedure for collecting this metric feasible??
+		-Does it require too much sampling, or does that sampling intefere with other system parts?
+		-Lots of difficult to measure metrics
+
+	Consistency:
+		-Is the metric the same across all systems? 
+		-MIPS is not consistent across all architectures: CISC and RISC
+		-SLOC is not consistent across LANGUAGES: Ruby code vs C code
+
+	Representation Condition:
+		-Your EMPIRICAL measurements should represent your THEORETICAL model
+		-Under the representation condition, any property of the number system must appropriately map to a prop being measured
+		-Linearity is an example
+		-Mathematical transformations on the empirical data should align with
+		-SLOC fails RC for functional size because bad code can be large in SLOC and vice versa
+			*Validating software metrics: A spectrum of philosophies Meneely, Smith, Williams 2013*
+
+Key Metrics Lessons
+	-One metric does not tell the whole story
+		*You will always need multiple
+		*Performance is a multi-dimensional concept
+	-A performance requirement must define context
+		*What metrics?
+		*Under what load conditions, etc
+
+
