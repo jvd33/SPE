@@ -36,22 +36,25 @@ def merge_sort(arr):
     left = merge_sort(left)
     right = merge_sort(right)
 
-    return _merge(left, right)
+    return merge(left, right)
 
-def _merge(l, r):
+
+def merge(l, r):
     result = []
     while l and r:
         result.append(l.pop(0)) if l[0] <= r[0] else result.append(r.pop(0))
-    while l:
-        result += l
-    while r:
-        result += r
+    result = result + l if l else result + r
     return result
+
 
 # Default python sorting algorithm
 def tim_sort(arr):
     pass
 
+
+def timer(arr, algo):
+    sort = timeit.Timer(lambda: globals()[algo](arr.copy()))
+    print(algo + ": " + format(sort.timeit(10), '.20f') + " seconds")
 
 def main():
   pass
@@ -59,28 +62,33 @@ def main():
 
 def test(arr):
     def _insertion(a):
-        return str(insertion_sort(a) == sorted(a))
+        insertion_sort(a)
+        return str(a == sorted(a))
+
     def _quick(a):
-        return str(quick_sort(a) == sorted(a))
+        return str(sorted(a) == quick_sort(a))
+
     def _bubble(a):
-        return str(bubble_sort(a) == sorted(a))
-    return "Insertion: " + _insertion(arr.copy()) + "\nQuick: " + _quick(arr.copy()) + "\nBubble: " + _bubble(arr.copy())
+        bubble_sort(a)
+        return str(sorted(a) == a)
+
+    def _merge(a):
+        return str(sorted(a) == merge_sort(a))
+
+    def _tim(a):
+        return
+    return "Insertion: " + _insertion(arr.copy()) + \
+           "\nQuick: " + _quick(arr.copy()) + \
+           "\nBubble: " + _bubble(arr.copy()) + \
+           "\nMerge: " + _merge(arr.copy()) + \
+           "\nTim: " + _tim(arr.copy())
 
 if __name__ == '__main__':
     strings = ["hey", "zed", "inhumane", "a", "c", "b", "z", "p"]
     ints = [int(1000*random.random()) for i in range(10)]
+
+    timer(ints, "quick_sort")
+    timer(ints, "merge_sort")
+    timer(ints, "insertion_sort")
+    timer(ints, "bubble_sort")
     print(test(ints))
-    qsort = timeit.Timer(lambda: quick_sort(ints.copy()))
-    print("Quick sort: " + format(qsort.timeit(10), '.20f') + " seconds")
-    print(ints)
-
-    isort = timeit.Timer(lambda: insertion_sort((ints.copy())))
-    print("Insertion sort: " + format(isort.timeit(10), '.20f') + " seconds")
-    print(ints)
-
-    bsort = timeit.Timer(lambda: bubble_sort(ints.copy()))
-    print("Bubble sort:" + format(bsort.timeit(10), '.20f') + " seconds")
-    print(ints)
-
-    print(merge_sort(ints.copy()) == sorted(ints))
-
