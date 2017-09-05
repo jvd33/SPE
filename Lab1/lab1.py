@@ -36,17 +36,17 @@ def merge_sort(arr):
     left = merge_sort(left)
     right = merge_sort(right)
 
-    def _merge(l, r):
-        result = []
-        while l and r:
-            result.append(l.pop(0)) if l[0] <= r[0] else result.append(r.pop(0))
-        while l:
-            result += l
-        while r:
-            result += r
-        return result
-
     return _merge(left, right)
+
+def _merge(l, r):
+    result = []
+    while l and r:
+        result.append(l.pop(0)) if l[0] <= r[0] else result.append(r.pop(0))
+    while l:
+        result += l
+    while r:
+        result += r
+    return result
 
 # Default python sorting algorithm
 def tim_sort(arr):
@@ -68,7 +68,7 @@ def test(arr):
 
 if __name__ == '__main__':
     strings = ["hey", "zed", "inhumane", "a", "c", "b", "z", "p"]
-    ints = [int(1000*random.random()) for i in range(500)]
+    ints = [int(1000*random.random()) for i in range(10)]
     print(test(ints))
     qsort = timeit.Timer(lambda: quick_sort(ints.copy()))
     print("Quick sort: " + format(qsort.timeit(10), '.20f') + " seconds")
