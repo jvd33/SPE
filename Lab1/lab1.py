@@ -1,5 +1,4 @@
-import timeit
-import random
+import timeit, random, string
 
 
 def bubble_sort(arr):
@@ -47,18 +46,33 @@ def merge(l, r):
     return result
 
 
-# Default python sorting algorithm
-def tim_sort(arr):
-    pass
+def heap_sort(arr):
+    for i in range(len(arr) // 2, -1, -1):
+        move_down(arr, i, len(arr) - 1)
+    for i in range(len(arr)-1, 0, -1):
+        if arr[0] > arr[i]:
+            arr[0], arr[i] = arr[i], arr[0]
+            move_down(arr, 0, i - 1)
+
+
+def move_down(arr, i, n):
+    j = 2 * i + 1
+    while j <= n:
+        if j < n and arr[j] < arr[j + 1]:
+            j += 1
+        if arr[j] > arr[i]:
+            arr[j], arr[i] = arr[i], arr[j]
+            i = j
+            j = 2 * i + 1
+        else:
+            return
 
 
 def timer(arr, algo):
     sort = timeit.Timer(lambda: globals()[algo](arr.copy()))
-    print(algo + ": " + format(sort.timeit(10), '.20f') + " seconds")
-
-def main():
-  pass
-
+    time = sort.timeit(10)
+    # print(algo + ": " + format(time, ".20f") + " seconds")
+    return {time: algo}
 
 def test(arr):
     def _insertion(a):
@@ -75,20 +89,23 @@ def test(arr):
     def _merge(a):
         return str(sorted(a) == merge_sort(a))
 
-    def _tim(a):
-        return
+    def _heap(a):
+        heap_sort(a)
+        return str(sorted(a) == a)
     return "Insertion: " + _insertion(arr.copy()) + \
            "\nQuick: " + _quick(arr.copy()) + \
            "\nBubble: " + _bubble(arr.copy()) + \
            "\nMerge: " + _merge(arr.copy()) + \
-           "\nTim: " + _tim(arr.copy())
+           "\nHeap: " + _heap(arr.copy())
 
 if __name__ == '__main__':
-    strings = ["hey", "zed", "inhumane", "a", "c", "b", "z", "p"]
-    ints = [int(1000*random.random()) for i in range(10)]
-
-    timer(ints, "quick_sort")
-    timer(ints, "merge_sort")
-    timer(ints, "insertion_sort")
-    timer(ints, "bubble_sort")
+    strings = [''.join(random.choice(string.ascii_lowercase) for i in range(random.randint(5, 10))) for i in range(10)]
+    ints = [int(1000*random.random()) for i in range(1000)]
+    algorithms = ["quick_sort", "merge_sort", "bubble_sort", "insertion_sort", "heap_sort"]
+    results = {}
+    
+    for x in algorithms:
+        results.update(timer(ints, x))
+    for time in sorted(results.keys()):
+        print(results[time] + ": " + format(time, ".20f") + "\n")
     print(test(ints))
