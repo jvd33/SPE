@@ -11,9 +11,9 @@ def bubble_sort(arr):
 def quick_sort(arr):
     if not arr:
         return arr
-    pivot = arr[0]
-    below = [i for i in arr[1:] if i < pivot]
-    above = [i for i in arr[1:] if i >= pivot]
+    pivot = arr[len(arr) // 2]
+    below = [i for i in arr[len(arr)//2 + 1:] if i < pivot]
+    above = [i for i in arr[len(arr)//2 + 1:] if i >= pivot]
     return quick_sort(below) + [pivot] + quick_sort(above)
 
 
@@ -68,11 +68,10 @@ def move_down(arr, i, n):
             return
 
 
-def timer(arr, algo):
-    sort = timeit.Timer(lambda: globals()[algo](arr.copy()))
-    time = sort.timeit(10)
-    # print(algo + ": " + format(time, ".20f") + " seconds")
-    return {time: algo}
+def timer(arr, algo, run, default=False):
+    sort = timeit.Timer(lambda: globals()[algo](arr.copy())) if not default else timeit.Timer(lambda: sorted(arr.copy()))
+    return {algo: format(sort.timeit(run)/run, '.20f')}
+
 
 def test(arr):
     def _insertion(a):
@@ -99,13 +98,20 @@ def test(arr):
            "\nHeap: " + _heap(arr.copy())
 
 if __name__ == '__main__':
-    strings = [''.join(random.choice(string.ascii_lowercase) for i in range(random.randint(5, 10))) for i in range(10)]
-    ints = [int(1000*random.random()) for i in range(1000)]
+    strings = [''.join(random.choice(string.ascii_lowercase) for i in range(random.randint(5, 10))) for i in range(10000)]
+    n = [1000]
+
     algorithms = ["quick_sort", "merge_sort", "bubble_sort", "insertion_sort", "heap_sort"]
-    results = {}
-    
+    runs = 1000
+
     for x in algorithms:
-        results.update(timer(ints, x))
-    for time in sorted(results.keys()):
-        print(results[time] + ": " + format(time, ".20f") + "\n")
-    print(test(ints))
+        print(x + "\n")
+        results = {}
+        for i in n:
+            ints = [int(random.random() * 1000) for i in range(i)]
+            strings = [''.join(random.choice(string.ascii_lowercase) for k in range(random.randint(5, 10))) for j in range(i)]
+            results.update(timer(strings, x, runs))
+            for k in results.keys():
+                print(str(i) + ": " + str(results[k]) + "\n")
+
+
