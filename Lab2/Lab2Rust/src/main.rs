@@ -25,18 +25,20 @@ fn stack_fib(n: i32) -> i32 {
     result
 }
 
-fn super_digit_recursive(n: i32, k: i32) -> i32 { 
+fn super_digit_recursive(mut n: i64, k: i32) -> i64 { 
+    n = n.to_string().repeat(k as usize).parse::<i64>().unwrap();
     if n.to_string().len() <= 1 { 
         return n
     }
     let mut x = 0;
     for c in n.to_string().chars() { 
-        x += c as i32 - '0' as i32
+        x += c as i64 - '0' as i64
     }
-    super_digit_recursive(x * k, 1)
+    super_digit_recursive(x, 1)
 }
 
-fn super_digit_stack(n: i32, mut k: i32) -> i32 { 
+fn super_digit_stack(mut n: i64, k: i32) -> i64 { 
+    n = n.to_string().repeat(k as usize).parse::<i64>().unwrap();
     let mut result = 0;
     let mut stack = vec![n];
     while stack.len() > 0 { 
@@ -45,10 +47,9 @@ fn super_digit_stack(n: i32, mut k: i32) -> i32 {
             result += x;
         } else { 
             for c in x.to_string().chars() { 
-                result += c as i32 - '0' as i32
+                result += c as i64 - '0' as i64
             }
-            stack.push(result * k);
-            k = 1;
+            stack.push(result);
             result = 0;
         }
     }
@@ -56,7 +57,7 @@ fn super_digit_stack(n: i32, mut k: i32) -> i32 {
 }
 
 fn main() {
-    let f = 20;
+    let f = 30;
     let s = 12345;
     let x = 3;
     
