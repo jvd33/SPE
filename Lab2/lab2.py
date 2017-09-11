@@ -2,7 +2,7 @@ import timeit
 from memory_profiler import memory_usage, profile
 import tracemalloc
 
-
+@profile
 def recursive_fib_wrap(n):
     return recursive_fib(n)
 
@@ -23,7 +23,7 @@ def memoize(func):
 
     return helper
 
-
+@profile
 def stack_fib(n):
     result = 0
     stack = [n]
@@ -38,6 +38,7 @@ def stack_fib(n):
 
 
 # hackerrank recursive problem, returns the super digit of the digit sum of n
+@profile
 def super_digit_recursive_wrap(n, k):
     return super_digit_recursive(n, k)
 
@@ -52,6 +53,7 @@ def super_digit_recursive(n, k):
     return super_digit_recursive(x, 1)
 
 
+@profile
 def super_digit_stack(n=12345, k=3):
     n = str(n) * k
     result = 0
@@ -69,9 +71,9 @@ def super_digit_stack(n=12345, k=3):
 
 
 if __name__ == "__main__":
-    f = 30
+    f = 20
     s = 98237450192834571829
-    nr = 1000
+    nr = 1
     runs = 1
     fib = memoize(recursive_fib_wrap)
     fibx = timeit.Timer(lambda: fib(f))
@@ -80,10 +82,8 @@ if __name__ == "__main__":
     sr = timeit.Timer(lambda: super_digit_recursive_wrap(s, nr))
     ss = timeit.Timer(lambda: super_digit_stack(s, nr))
 
-    print(format(fibx.timeit(runs)/runs, '.20f'))
-
     print(format(fibr.timeit(runs)/runs, '.20f'))
     print(format(fibs.timeit(runs)/runs, '.20f'))
-    print(format(sr.timeit(runs)/runs, '.20f'))
-    print(format(ss.timeit(runs)/runs, '.20f'))
+    #print(format(sr.timeit(runs)/runs, '.20f'))
+    #print(format(ss.timeit(runs)/runs, '.20f'))
 
