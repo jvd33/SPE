@@ -1,0 +1,7 @@
+[package]
+name = "Lab2Rust"
+version = "0.1.0"
+authors = ["jvd33 <jvd5839@g.rit.edu>"]
+
+[dependencies]
+time = "0.1"
