@@ -99,10 +99,10 @@ def test(arr):
 
 if __name__ == '__main__':
     strings = [''.join(random.choice(string.ascii_lowercase) for i in range(random.randint(5, 10))) for i in range(10000)]
-    n = [1000]
+    n = [100000, 500000]
 
-    algorithms = ["quick_sort", "merge_sort", "bubble_sort", "insertion_sort", "heap_sort"]
-    runs = 1000
+    algorithms = ["quick_sort"]
+    runs = 100
 
     for x in algorithms:
         print(x + "\n")
@@ -110,6 +110,9 @@ if __name__ == '__main__':
         for i in n:
             ints = [int(random.random() * 1000) for i in range(i)]
             strings = [''.join(random.choice(string.ascii_lowercase) for k in range(random.randint(5, 10))) for j in range(i)]
+
+            sort = timeit.Timer(lambda: sorted(ints.copy()))
+            print({"tim_sort": format(sort.timeit(runs)/runs, '.20f')})
             results.update(timer(strings, x, runs))
             for k in results.keys():
                 print(str(i) + ": " + str(results[k]) + "\n")
