@@ -20,8 +20,7 @@ fn stack_fib(n: i32) -> i32 {
             stack.push(x - 1);
             stack.push(x - 2);
         }
-    }
-     
+    }  
     result
 }
 
@@ -57,27 +56,27 @@ fn super_digit_stack(mut n: i64, k: i32) -> i64 {
 }
 
 fn main() {
-    let f = 30;
+    let f = 40;
     let s = 12345;
     let x = 3;
     
+    //let mut start = PreciseTime::now();
+    //println!("{}", recursive_fib(f));
+    //let mut end = PreciseTime::now();
+    //println!("{}", start.to(end));
+    
     let mut start = PreciseTime::now();
-    println!("{}", recursive_fib(f));
+    println!("{}", stack_fib(f));
     let mut end = PreciseTime::now();
     println!("{}", start.to(end));
     
-    start = PreciseTime::now();
-    println!("{}", stack_fib(f));
-    end = PreciseTime::now();
-    println!("{}", start.to(end));
+    //start = PreciseTime::now();
+    //println!("{}", super_digit_recursive(s, x));
+    //end = PreciseTime::now();
+    //println!("{}", start.to(end));
     
-    start = PreciseTime::now();
-    println!("{}", super_digit_recursive(s, x));
-    end = PreciseTime::now();
-    println!("{}", start.to(end));
-    
-    start = PreciseTime::now();
-    println!("{}", super_digit_stack(s, x));
-    end = PreciseTime::now();
-    println!("{}", start.to(end));
+    //start = PreciseTime::now();
+    //println!("{}", super_digit_stack(s, x));
+    //end = PreciseTime::now();
+    //println!("{}", start.to(end));
 }
